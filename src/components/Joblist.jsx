@@ -265,7 +265,6 @@ const Joblist = () => {
                                     component="th"
                                     id={labelId}
                                     scope="row"
-                                    padding="5"
                                   >
                                     {row.name}
                                   </TableCell>
