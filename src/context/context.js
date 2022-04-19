@@ -5,21 +5,30 @@ const JobContext = React.createContext();
 const reducer = (state,action) => {
   switch(action.type) {
     case "DELETE_JOB":
-       
-       return {
-        ...state,
-        jobs: state.jobs.filter(job => action.payload !== job.id)
-       }
+       {
+        localStorage.setItem("jobs",JSON.stringify(state.jobs.filter(job => action.payload !== job.id)));
+         return {
+           ...state,
+           jobs: state.jobs.filter(job => action.payload !== job.id)
+          }
+        }
     case "ADD_JOB":
+      {
+       localStorage.setItem("jobs",JSON.stringify([...state.jobs,action.payload]))
        return {
          ...state,
          jobs : [...state.jobs,action.payload]
        }
+      }
     case "UPDATE_JOB":
-       return {
-         ...state,
-         jobs: state.jobs.map(job => job.id === action.payload.id ? action.payload : job)
-       }
+      {
+        let temp = state.jobs.map(job => job.id === action.payload.id ? action.payload : job);
+        localStorage.setItem("jobs",JSON.stringify(temp))
+        return {
+          ...state,
+          jobs: temp
+        }
+      }
     default:
       return state
 
