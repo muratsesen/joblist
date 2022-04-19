@@ -178,14 +178,28 @@ const Joblist = ({ jobs,updateJob,onDelete,onSearch }) => {
   const [openDeleteConfirm, setOpenDeleteConfirm] = React.useState(false);
   const [openJobEdit, setOpenJobEdit] = React.useState(false);
   const [selected, setSelected] = React.useState([]);
-
+  const [filters, setFilter] = useState(null);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+  const handleFilter=(array)=>{
+    if(filters){
+      if(filters.name !== ''){
+        array = array.filter(job=>job.name.includes(filters.name))
+      }
+      if(filters.priority>0){
+          array = array.filter(job=>job.priority === filters.priority)
+      }
+    }
 
+    return array;
+  }
+  const onSearchLocal=(item)=>{
+    setFilter({name:item.name,priority:item.priority});
+  }
   const openConfirm=()=>{setOpenDeleteConfirm(true)}
   const onCancel=()=>{setOpenDeleteConfirm(false); setOpenJobEdit(false)}
   const onDeleteConfirmed=()=>{
@@ -221,7 +235,7 @@ const Joblist = ({ jobs,updateJob,onDelete,onSearch }) => {
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Box sx={{ width: "100%" }}>
             <Paper sx={{ width: "100%", mb: 2 }}>
-              <EnhancedTableToolbar onSearch={onSearch} />
+              <EnhancedTableToolbar onSearch={onSearchLocal} />
               <TableContainer>
                 <Table
                   sx={{ minWidth: 750 }}
@@ -238,7 +252,7 @@ const Joblist = ({ jobs,updateJob,onDelete,onSearch }) => {
                   <TableBody>
                     {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  jobs.slice().sort(getComparator(order, orderBy)) */}
-                    {jobs && stableSort(jobs, getComparator(order, orderBy)).map(
+                    {jobs && handleFilter(stableSort(jobs, getComparator(order, orderBy))).map(
                       (row, index) => {
                         const labelId = `enhanced-table-checkbox-${index}`;
 
