@@ -32,31 +32,17 @@ const theme = createTheme({
 const EditJob = ({ job,open, handleCancel,onClose }) => {
     const [values, setValues] = useState({
         id:0,
-        name:"",
-        priority:0
+        name: "",
+        priority:1
     });
-    const [priorityError, setPriorityError] = useState(false);
 
     const onEdit = (dispatch) => {
-        if (!validateJob(values)) return;
         dispatch({type:"UPDATE_JOB",payload:values})
         onClose();
       };
-    
-      const validateJob = (newJob) => {
-        let hasError = false;
 
-        if (newJob.priority === 0) {
-          setPriorityError(true);
-          hasError = true;
-        }
-    
-        if (hasError) return false;
-    
-        return true;
-      };
-
-      useEffect(()=>setValues(job),[job])
+      useEffect(()=>{
+        if(job.name)setValues(job)},[job]);
 
       return <JobConsumer>
         {value=>{
@@ -98,11 +84,11 @@ const EditJob = ({ job,open, handleCancel,onClose }) => {
                       <Grid>
                         <TextField
                           disabled
-                          value={values.name}
                           size="small"
                           fullWidth
                           id="outlined-basic"
                           variant="outlined"
+                          defaultValue={job.name}
                         />
                       </Grid>
                     </Grid>
@@ -118,22 +104,19 @@ const EditJob = ({ job,open, handleCancel,onClose }) => {
                       </Grid>
                       <Grid>
                         <Select
-                          error={priorityError}
                           fullWidth
                           size="small"
                           labelId="demo-simple-select-label1"
                           id="demo-simple-select"
-                          value={values.priority}
+                          value={values.priority }
                           onChange={(e) => {
                             setValues({...values,"priority":e.target.value});
-                            setPriorityError(false);
                           }}
                         >
-                          <MenuItem value={0}>Choose</MenuItem>
                           <MenuItem value={1}>Urgent</MenuItem>
                           <MenuItem value={2}>Regualar</MenuItem>
                           <MenuItem value={3}>Trivial</MenuItem>
-                        </Select>
+                        </Select> 
                       </Grid>
                     </Grid>
                   </Grid>

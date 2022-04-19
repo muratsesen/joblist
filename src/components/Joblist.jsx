@@ -202,7 +202,7 @@ const Joblist = () => {
   const onSearchLocal=(item)=>{
     setFilter({name:item.name,priority:item.priority});
   }
-  const openConfirm=(d)=>{
+  const openConfirm=()=>{
     setOpenDeleteConfirm(true);
   }
   const handleClose=()=>{setOpenDeleteConfirm(false); setOpenJobEdit(false)}
@@ -214,7 +214,7 @@ const Joblist = () => {
 
   return <JobConsumer>
     {value=>{
-      const {jobs,dispatch} = value;
+      const {jobs} = value;
         return (
           <div>
             <Confirm open={openDeleteConfirm} handleClose={handleClose} selected={selected}/>
@@ -276,7 +276,7 @@ const Joblist = () => {
                                       <IconButton
                                         onClick={() => {
                                           setSelected(row);
-                                          openConfirm(dispatch)
+                                          openConfirm()
                                         }}
                                       >
                                         <Delete />
